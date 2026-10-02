@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-blue: var(--blue);
+  --color-pink: var(--pink);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+
+  --font-heading: 'Bricolage Grotesque', sans-serif;
+  --font-body: 'Nunito', sans-serif;
+}
+
+@layer base {
+  :root {
+    --background: hsl(48, 100%, 96%);
+    --foreground: hsl(228, 40%, 14%);
+    --primary: hsl(46, 100%, 58%);
+    --primary-foreground: hsl(228, 40%, 14%);
+    --blue: hsl(226, 80%, 52%);
+    --pink: hsl(346, 88%, 72%);
+    --muted-foreground: hsl(228, 12%, 40%);
+    --border: hsl(228, 40%, 14%);
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-extrabold;
+  }
+}
+
+@layer utilities {
+  .hard-shadow {
+    border: 2px solid var(--border);
+    box-shadow: 4px 4px 0 var(--border);
+  }
+
+  .hard-shadow-hover {
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  
+  .hard-shadow-hover:hover {
+    transform: translate(-2px, -2px) scale(1.02);
+    box-shadow: 6px 6px 0 var(--border);
+  }
+
+  .hard-shadow-hover:active {
+    transform: translate(4px, 4px) scale(0.98);
+    box-shadow: 0px 0px 0 var(--border);
+  }
+
+  .text-shadow-hard {
+    text-shadow: 2px 2px 0 var(--border);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@keyframes blob {
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+.animate-blob {
+  animation: blob 7s infinite;
+}
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.diagonal-stripes {
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(255, 255, 255, 0.08) 10px,
+    rgba(255, 255, 255, 0.08) 20px
+  );
+}
