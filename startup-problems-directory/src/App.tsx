@@ -71,7 +71,10 @@ function App() {
   return (
     <MotionConfig reducedMotion="never">
       {currentPage === "evaluation" ? (
-        <StartupEvaluationPage onBack={navigateToHome} />
+        <StartupEvaluationPage
+          onBack={navigateToHome}
+          onBackToFramework={navigateToFramework}
+        />
       ) : currentPage === "framework" ? (
         <FrameworkPage
           onBack={navigateToHome}
@@ -80,9 +83,9 @@ function App() {
       ) : (
         <div className="min-h-screen flex flex-col">
           <Ticker />
-          <Navbar onExploreFramework={navigateToEvaluation} />
+          <Navbar onExploreFramework={navigateToFramework} />
           <main className="flex-1">
-            <Hero onExploreFramework={navigateToEvaluation} />
+            <Hero onExploreFramework={navigateToFramework} />
             <PlatformsSection />
             <HowItWorks />
             <CTA />

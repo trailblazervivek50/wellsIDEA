@@ -31,9 +31,10 @@ import { getGeminiApiKey, getGeminiModel } from "../plugins/geminiResearchPlugin
 
 interface StartupEvaluationPageProps {
   onBack: () => void;
+  onBackToFramework?: () => void;
 }
 
-export function StartupEvaluationPage({ onBack }: StartupEvaluationPageProps) {
+export function StartupEvaluationPage({ onBack, onBackToFramework }: StartupEvaluationPageProps) {
   // Input form state
   const [ideaText, setIdeaText] = useState<string>(
     BENCHMARK_EXAMPLES[0].profile.oneLineIdea
@@ -257,16 +258,29 @@ ${report.finalVerdict}
     <div className="min-h-screen w-full bg-[#FFFBEF] text-[#141A35] font-body relative overflow-x-hidden flex flex-col">
       {/* Top Header */}
       <header className="relative z-30 w-full max-w-7xl mx-auto px-4 sm:px-8 py-4 flex items-center justify-between border-b-2 border-[#141A35]/15">
-        <motion.button
-          type="button"
-          onClick={onBack}
-          whileHover={{ x: -3 }}
-          whileTap={{ scale: 0.97 }}
-          className="inline-flex items-center gap-2 font-heading font-extrabold text-xs sm:text-sm tracking-wider uppercase text-[#141A35] hover:text-[#2450EA] transition-colors cursor-pointer py-1.5 px-2.5 rounded-lg focus-visible:outline-3 focus-visible:outline-[#2450EA]"
-        >
-          <ArrowLeft className="w-4 h-4" strokeWidth={2.75} />
-          <span>BACK TO DIRECTORY</span>
-        </motion.button>
+        <div className="flex items-center gap-2">
+          {onBackToFramework && (
+            <motion.button
+              type="button"
+              onClick={onBackToFramework}
+              whileHover={{ x: -3 }}
+              whileTap={{ scale: 0.97 }}
+              className="inline-flex items-center gap-2 font-heading font-extrabold text-xs sm:text-sm tracking-wider uppercase text-[#141A35] hover:text-[#2450EA] transition-colors cursor-pointer py-1.5 px-2.5 rounded-lg focus-visible:outline-3 focus-visible:outline-[#2450EA]"
+            >
+              <ArrowLeft className="w-4 h-4" strokeWidth={2.75} />
+              <span>JOURNEY MAP</span>
+            </motion.button>
+          )}
+          <motion.button
+            type="button"
+            onClick={onBack}
+            whileHover={{ x: -3 }}
+            whileTap={{ scale: 0.97 }}
+            className="inline-flex items-center gap-2 font-heading font-extrabold text-xs sm:text-sm tracking-wider uppercase text-[#141A35]/70 hover:text-[#141A35] transition-colors cursor-pointer py-1.5 px-2.5 rounded-lg focus-visible:outline-3 focus-visible:outline-[#2450EA]"
+          >
+            <span>HOME</span>
+          </motion.button>
+        </div>
 
         <div className="flex items-center gap-3">
           <button
