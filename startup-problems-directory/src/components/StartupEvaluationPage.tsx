@@ -31,7 +31,7 @@ import { getGeminiApiKey, getGeminiModel } from "../plugins/geminiResearchPlugin
 
 interface StartupEvaluationPageProps {
   onBack: () => void;
-  onBackToFramework?: () => void;
+  onBackToFramework?: (origin?: { x: number; y: number }) => void;
 }
 
 export function StartupEvaluationPage({ onBack, onBackToFramework }: StartupEvaluationPageProps) {
@@ -262,7 +262,10 @@ ${report.finalVerdict}
           {onBackToFramework && (
             <motion.button
               type="button"
-              onClick={onBackToFramework}
+              onClick={(e) => {
+                const origin = { x: e.clientX, y: e.clientY };
+                onBackToFramework(origin);
+              }}
               whileHover={{ x: -3 }}
               whileTap={{ scale: 0.97 }}
               className="inline-flex items-center gap-2 font-heading font-extrabold text-xs sm:text-sm tracking-wider uppercase text-[#141A35] hover:text-[#2450EA] transition-colors cursor-pointer py-1.5 px-2.5 rounded-lg focus-visible:outline-3 focus-visible:outline-[#2450EA]"

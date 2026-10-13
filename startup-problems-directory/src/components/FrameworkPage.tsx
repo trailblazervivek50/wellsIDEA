@@ -4,7 +4,7 @@ import { useState } from "react";
 
 interface FrameworkPageProps {
   onBack: () => void;
-  onExploreFramework?: () => void;
+  onExploreFramework?: (origin?: { x: number; y: number }) => void;
 }
 
 type CardColor = "yellow" | "blue" | "pink" | "cream";
@@ -339,7 +339,7 @@ function CentralFrameworkCTA({
   onClick,
   className = "",
 }: {
-  onClick: () => void;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   className?: string;
 }) {
   return (
@@ -450,9 +450,19 @@ function ConnectingArrowsSVG({
 export function FrameworkPage({ onBack, onExploreFramework }: FrameworkPageProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
-  const handleCycleFramework = () => {
+  const handleCycleFramework = (e?: React.MouseEvent<HTMLButtonElement>) => {
     if (onExploreFramework) {
-      onExploreFramework();
+      let origin: { x: number; y: number } | undefined;
+      if (e && e.clientX && e.clientY) {
+        origin = { x: e.clientX, y: e.clientY };
+      } else if (e && e.currentTarget) {
+        const rect = e.currentTarget.getBoundingClientRect();
+        origin = {
+          x: Math.round(rect.left + rect.width / 2),
+          y: Math.round(rect.top + rect.height / 2),
+        };
+      }
+      onExploreFramework(origin);
       return;
     }
     setSelectedIndex((prev) =>
@@ -513,7 +523,7 @@ export function FrameworkPage({ onBack, onExploreFramework }: FrameworkPageProps
             {onExploreFramework && (
               <button
                 type="button"
-                onClick={onExploreFramework}
+                onClick={handleCycleFramework}
                 className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFD329] border-2 border-[#141A35] font-heading font-extrabold text-[11px] uppercase tracking-wider text-[#141A35] shadow-[2px_2px_0_#141A35] hover:bg-[#2450EA] hover:text-white transition-colors cursor-pointer"
               >
                 <span>10% EVALUATION</span>
