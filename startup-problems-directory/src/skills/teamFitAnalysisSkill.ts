@@ -10,7 +10,7 @@ export class TeamFitAnalysisSkill {
   name = "TeamFitAnalysisSkill";
   mappedDimensions = ["Why This Team", "People", "Execution Readiness"];
 
-  analyze(profile: VentureProfile, evidence: EvidenceItem[]): TeamFitAnalysis {
+  analyze(profile: VentureProfile, _evidence: EvidenceItem[]): TeamFitAnalysis {
     const teamText = (profile.teamBackground || "").toLowerCase();
 
     const hasTech = teamText.includes("engineer") || teamText.includes("ml") || teamText.includes("developer") || teamText.includes("tech");

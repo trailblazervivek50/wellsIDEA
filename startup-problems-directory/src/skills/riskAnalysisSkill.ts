@@ -11,7 +11,7 @@ export class RiskAnalysisSkill {
   name = "RiskAnalysisSkill";
   mappedDimensions = ["Why Won’t This Work", "Risk Awareness"];
 
-  analyze(profile: VentureProfile, evidence: EvidenceItem[]): RiskAnalysisResult {
+  analyze(profile: VentureProfile, _evidence: EvidenceItem[]): RiskAnalysisResult {
     const text = (profile.problem + " " + profile.solution + " " + profile.industry).toLowerCase();
 
     let primaryKillCondition = "Lack of customer urgency: users express enthusiasm but refuse to pay when presented with an invoice.";

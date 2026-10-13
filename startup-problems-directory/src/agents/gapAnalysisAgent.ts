@@ -7,7 +7,7 @@ import type {
 export class GapAnalysisAgent {
   name = "GapAnalysisAgent";
 
-  identifyGaps(scorecard: ScorecardItem[], profile: VentureProfile): GapItem[] {
+  identifyGaps(scorecard: ScorecardItem[], _profile: VentureProfile): GapItem[] {
     const lowScoring = scorecard.filter((item) => item.score <= 3);
 
     return lowScoring.map((item) => {

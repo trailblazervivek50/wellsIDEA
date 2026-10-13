@@ -453,13 +453,18 @@ export function FrameworkPage({ onBack, onExploreFramework }: FrameworkPageProps
   const handleCycleFramework = (e?: React.MouseEvent<HTMLButtonElement>) => {
     if (onExploreFramework) {
       let origin: { x: number; y: number } | undefined;
-      if (e && e.clientX && e.clientY) {
-        origin = { x: e.clientX, y: e.clientY };
-      } else if (e && e.currentTarget) {
-        const rect = e.currentTarget.getBoundingClientRect();
+      if (e && e.currentTarget) {
+        const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
         origin = {
           x: Math.round(rect.left + rect.width / 2),
           y: Math.round(rect.top + rect.height / 2),
+        };
+      } else if (e && e.clientX && e.clientY) {
+        origin = { x: e.clientX, y: e.clientY };
+      } else {
+        origin = {
+          x: typeof window !== "undefined" ? Math.round(window.innerWidth / 2) : 700,
+          y: typeof window !== "undefined" ? Math.round(window.innerHeight / 2) : 400,
         };
       }
       onExploreFramework(origin);

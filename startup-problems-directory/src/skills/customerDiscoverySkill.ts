@@ -11,7 +11,7 @@ export class CustomerDiscoverySkill {
   name = "CustomerDiscoverySkill";
   mappedDimensions = ["Customer Clarity", "Problem Pain", "Evidence Quality"];
 
-  analyze(profile: VentureProfile, evidence: EvidenceItem[]): CustomerDiscoveryAnalysis {
+  analyze(profile: VentureProfile, _evidence: EvidenceItem[]): CustomerDiscoveryAnalysis {
     const isDistinctBuyer = profile.targetBuyer.toLowerCase() !== profile.targetUser.toLowerCase();
     const hasClearBuyer = Boolean(profile.targetBuyer && profile.targetBuyer.trim().length > 4);
 

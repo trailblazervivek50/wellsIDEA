@@ -6,7 +6,6 @@ import type {
   ValidationExperiment,
   VentureProfile,
 } from "../types/startupEvaluation";
-import { interpretOverallScore } from "../framework/scoringWeights";
 
 export class RecommendationAgent {
   name = "RecommendationAgent";
@@ -14,15 +13,13 @@ export class RecommendationAgent {
   createActionPlan(
     score: number,
     gaps: GapItem[],
-    scorecard: ScorecardItem[],
+    _scorecard: ScorecardItem[],
     profile: VentureProfile
   ): {
     recommendation: Recommendation;
     experiments: ValidationExperiment[];
     finalVerdict: string;
   } {
-    const interpretation = interpretOverallScore(score);
-
     let proceedPivotOrPause: ProceedDecision = "pause";
     if (score >= 4.0) {
       proceedPivotOrPause = "proceed";

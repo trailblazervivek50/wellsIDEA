@@ -11,7 +11,7 @@ export class CompetitorResearchSkill {
   name = "CompetitorResearchSkill";
   mappedDimensions = ["Defensibility", "Customer Truth", "Value Creation"];
 
-  analyze(profile: VentureProfile, evidence: EvidenceItem[]): CompetitorAnalysis {
+  analyze(profile: VentureProfile, _evidence: EvidenceItem[]): CompetitorAnalysis {
     const isEarly = profile.stage === "idea" || profile.stage === "prototype";
     const hasProprietaryData = profile.solution.toLowerCase().includes("proprietary") ||
       profile.solution.toLowerCase().includes("integration") ||

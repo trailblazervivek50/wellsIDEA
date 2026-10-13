@@ -1,9 +1,10 @@
 import type {
   ConfidenceLevel,
-  EvidenceItem,
   EvidenceType,
   VentureProfile,
 } from "../types/startupEvaluation";
+
+declare const process: any;
 
 export interface RawResearchClaim {
   claim: string;
@@ -239,7 +240,7 @@ JSON schema:
     return Array.from(set);
   }
 
-  classifyConfidence(claim: string, evidenceType: EvidenceType): ConfidenceLevel {
+  classifyConfidence(_claim: string, evidenceType: EvidenceType): ConfidenceLevel {
     if (evidenceType === "direct") return "high";
     if (evidenceType === "indirect") return "medium";
     return "low";

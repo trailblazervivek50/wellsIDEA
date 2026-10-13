@@ -11,7 +11,7 @@ export class BusinessModelAnalysisSkill {
   name = "BusinessModelAnalysisSkill";
   mappedDimensions = ["Value Capture", "Execution Readiness"];
 
-  analyze(profile: VentureProfile, evidence: EvidenceItem[]): BusinessModelAnalysis {
+  analyze(profile: VentureProfile, _evidence: EvidenceItem[]): BusinessModelAnalysis {
     const bm = profile.businessModel.toLowerCase();
     const hasNumbers = /\$|\d+/.test(bm);
 

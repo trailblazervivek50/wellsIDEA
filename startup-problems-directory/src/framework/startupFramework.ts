@@ -1,5 +1,4 @@
 import { SCORING_WEIGHTS } from "./scoringWeights";
-import { EVIDENCE_LADDER } from "./evidenceLadder";
 import type { VentureProfile, FrameworkDimension } from "../types/startupEvaluation";
 
 export const FRAMEWORK_NAME = "10 Percent Startup Readiness Framework";

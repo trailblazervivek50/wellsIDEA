@@ -263,7 +263,11 @@ ${report.finalVerdict}
             <motion.button
               type="button"
               onClick={(e) => {
-                const origin = { x: e.clientX, y: e.clientY };
+                const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+                const origin = {
+                  x: Math.round(rect.left + rect.width / 2),
+                  y: Math.round(rect.top + rect.height / 2),
+                };
                 onBackToFramework(origin);
               }}
               whileHover={{ x: -3 }}

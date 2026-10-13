@@ -135,7 +135,7 @@ function App() {
             <Ticker />
             <Navbar onExploreFramework={navigateToFramework} />
             <main className="flex-1">
-              <Hero onExploreFramework={navigateToFramework} />
+              <Hero />
               <PlatformsSection />
               <HowItWorks />
               <CTA />
