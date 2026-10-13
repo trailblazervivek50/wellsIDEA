@@ -1,6 +1,14 @@
-import { motion, MotionConfig } from "framer-motion";
-import { ArrowLeft, ArrowUpRight, ArrowRight } from "lucide-react";
 import { useState } from "react";
+import { motion, MotionConfig, AnimatePresence } from "framer-motion";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ArrowUpRight,
+  Sparkles,
+  X,
+  Compass,
+} from "lucide-react";
+import { ResearchAgentWorkspace } from "./ResearchAgentWorkspace";
 
 interface FrameworkPageProps {
   onBack: () => void;
@@ -8,81 +16,116 @@ interface FrameworkPageProps {
 
 type CardColor = "yellow" | "blue" | "pink" | "cream";
 
-interface FrameworkCardItem {
+interface FrameworkCardData {
   id: string;
   heading: string;
   color: CardColor;
   rotation: number;
   desktopPos: string;
-  hasAccentStroke?: "top-left" | "top-right" | "bottom-left";
+  mitConcept: string;
+  mitInsight: string;
+  suggestedTest: string;
 }
 
-const frameworkCards: FrameworkCardItem[] = [
+const frameworkCards: FrameworkCardData[] = [
   {
     id: "01",
     heading: "You don't know anything about Entrepreneurship",
-    color: "yellow",
-    rotation: -1.4,
-    desktopPos: "left-[2.5%] top-[3.5%] w-[26.5%]",
-    hasAccentStroke: "top-left",
+    color: "cream",
+    rotation: -1.8,
+    desktopPos: "left-[11%] top-[3.5%] w-[28%]",
+    mitConcept: "The Value Loop & Discipline",
+    mitInsight:
+      "Entrepreneurship is not a lightning strike of genius; it is a systematic discipline of testing hypotheses against real market evidence.",
+    suggestedTest: "Map your venture's Value Loop: Who receives value, who pays for it, and what keeps it repeating?",
   },
   {
     id: "02",
     heading: "You see something that “Sucks”",
-    color: "cream",
-    rotation: 1.2,
-    desktopPos: "left-[1.5%] top-[28.5%] w-[24%]",
+    color: "pink",
+    rotation: 1.5,
+    desktopPos: "left-[4%] top-[30%] w-[27%]",
+    mitConcept: "Problem Pain & Customer Truth",
+    mitInsight:
+      "Great startups don't invent problems—they eliminate acute, expensive, frequent, or emotionally exhausting friction that exists today.",
+    suggestedTest: "Interview 15 target users. Quantify the hours wasted or dollars lost per month due to this friction.",
   },
   {
     id: "03",
     heading: "You have an Idea or Invention",
-    color: "pink",
-    rotation: -1,
-    desktopPos: "left-[37%] top-[2.5%] w-[25.5%]",
+    color: "yellow",
+    rotation: -0.8,
+    desktopPos: "left-[36%] top-[3%] w-[28%]",
+    mitConcept: "The 3+1 Why Test",
+    mitInsight:
+      "An invention is not a venture. You must prove Why This, Why Now, Why This Team, and anticipate Why Won't This Work.",
+    suggestedTest: "Run a pre-mortem: If this venture goes bankrupt in 18 months, what was the most probable cause of death?",
   },
   {
     id: "04",
     heading: "Being an Entrepreneur is Glamorous",
     color: "blue",
-    rotation: -1.3,
-    desktopPos: "left-[2%] top-[53.5%] w-[25%]",
+    rotation: -2.2,
+    desktopPos: "left-[5%] bottom-[28%] w-[27%]",
+    mitConcept: "Failure Anticipation & Execution Truth",
+    mitInsight:
+      "Roughly 90% of ventures fail because founders build what nobody asked for. Ruthless pre-mortems prevent years of wasted effort.",
+    suggestedTest: "Calculate your team's monthly runway and commit to kill criteria if customer willingness-to-pay is zero.",
   },
   {
     id: "05",
     heading: "How Do I Start? What Do I Do?",
     color: "yellow",
-    rotation: 1.2,
-    desktopPos: "left-[11%] bottom-[3.5%] w-[27.5%]",
-    hasAccentStroke: "bottom-left",
+    rotation: 1.8,
+    desktopPos: "left-[13%] bottom-[3.5%] w-[28%]",
+    mitConcept: "The MIT Evidence Ladder",
+    mitInsight:
+      "Climb from Level 0 (founder belief) to Level 2 (discovery interviews) before writing a single line of production code.",
+    suggestedTest: "Draft an interview script with 5 open-ended questions about past buying behavior—never pitch your solution.",
   },
   {
     id: "06",
     heading: "How will I make money so I can have a sustainable venture?",
-    color: "blue",
-    rotation: 1.4,
-    desktopPos: "right-[2.5%] top-[3.5%] w-[27.5%]",
-    hasAccentStroke: "top-right",
+    color: "pink",
+    rotation: 2.1,
+    desktopPos: "right-[11%] top-[3.5%] w-[28%]",
+    mitConcept: "Value Capture & Unit Economics",
+    mitInsight:
+      "Sustainable ventures capture a predictable fraction of the measurable economic surplus they create for their economic buyers.",
+    suggestedTest: "Test pricing elasticity: Compare a flat $149/mo SaaS model against a 15% savings-share model with 5 prospective buyers.",
   },
   {
     id: "07",
     heading: "How long will it take to bring my solution to market?",
-    color: "yellow",
-    rotation: -1.2,
-    desktopPos: "right-[1.5%] top-[28.5%] w-[25.5%]",
+    color: "cream",
+    rotation: -1.6,
+    desktopPos: "right-[4%] top-[30%] w-[27%]",
+    mitConcept: "7-Day & 30-Day Validation Sprints",
+    mitInsight:
+      "Speed of customer feedback beats speed of software engineering. Validate willingness to pay using concierge tests in under 30 days.",
+    suggestedTest: "Build a non-code clickable demo or paper prototype and run 5 guided customer walkthroughs within 7 days.",
   },
   {
     id: "08",
     heading: "Will I need to set up some sort of entity to do all this?",
     color: "cream",
-    rotation: 1.1,
-    desktopPos: "right-[2%] top-[53.5%] w-[26%]",
+    rotation: 1.2,
+    desktopPos: "right-[5%] bottom-[28%] w-[27%]",
+    mitConcept: "Legal Architecture Follows Traction",
+    mitInsight:
+      "Do not burn cash incorporating an expensive legal entity until customers have demonstrated willingness to sign or pay.",
+    suggestedTest: "Collect 10 non-binding Letters of Intent (LOIs) or deposit commitments before hiring corporate counsel.",
   },
   {
     id: "09",
     heading: "How Do I Keep People from Stealing my Ideas?",
-    color: "pink",
+    color: "blue",
     rotation: -1.3,
     desktopPos: "right-[11%] bottom-[3.5%] w-[28%]",
+    mitConcept: "Defensibility & Moat Construction",
+    mitInsight:
+      "Nobody steals raw ideas—they steal traction. Real defensibility comes from proprietary workflow integration, data network effects, and switching costs.",
+    suggestedTest: "Identify the single workflow integration that makes your tool painful for a customer to abandon after 30 days.",
   },
 ];
 
@@ -112,7 +155,6 @@ function buildConnector(
   };
 }
 
-// Nine clean curved navy arrows in a 1400x820 coordinate system pointing from each card toward the central CTA (center: 700, 398)
 const desktopConnectors: ConnectorSpec[] = [
   // 01 (top-left) -> curves down-right to upper-left of CTA
   buildConnector(385, 138, 455, 195, 512, 272, 562, 342),
@@ -144,48 +186,46 @@ function NavyDotGrid({
   className?: string;
 }) {
   return (
-    <svg
-      width={cols * 14}
-      height={rows * 14}
-      viewBox={`0 0 ${cols * 14} ${rows * 14}`}
-      className={className}
+    <div
+      className={`grid gap-2.5 pointer-events-none opacity-45 select-none ${className || ""}`}
+      style={{
+        gridTemplateColumns: `repeat(${cols}, 5px)`,
+        gridTemplateRows: `repeat(${rows}, 5px)`,
+      }}
       aria-hidden="true"
     >
-      {Array.from({ length: rows }).map((_, r) =>
-        Array.from({ length: cols }).map((__, c) => (
-          <circle
-            key={`${r}-${c}`}
-            cx={c * 14 + 4}
-            cy={r * 14 + 4}
-            r="2"
-            fill="#141A35"
-            opacity="0.22"
-          />
-        ))
-      )}
-    </svg>
+      {Array.from({ length: rows * cols }).map((_, i) => (
+        <span
+          key={i}
+          className="w-1.5 h-1.5 rounded-full bg-[#141A35]"
+        />
+      ))}
+    </div>
   );
 }
 
 function CircularArrowButton({ isHovered }: { isHovered: boolean }) {
   return (
-    <motion.span
+    <motion.div
       animate={{
         x: isHovered ? 2 : 0,
         y: isHovered ? -2 : 0,
         scale: isHovered ? 1.08 : 1,
       }}
-      transition={{ type: "spring", stiffness: 360, damping: 20 }}
-      className="w-8 h-8 xl:w-9 xl:h-9 rounded-full border-2 border-[#141A35] bg-[#FFFDF5] text-[#141A35] flex items-center justify-center shrink-0 shadow-[2px_2px_0_#141A35]"
+      transition={{ type: "spring", stiffness: 400, damping: 20 }}
+      className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-[#141A35] bg-white flex items-center justify-center shrink-0 shadow-[2px_2px_0_#141A35]"
       aria-hidden="true"
     >
-      <ArrowUpRight className="w-4 h-4 xl:w-4.5 xl:h-4.5" strokeWidth={2.75} />
-    </motion.span>
+      <ArrowUpRight
+        className="w-4 h-4 text-[#141A35]"
+        strokeWidth={2.75}
+      />
+    </motion.div>
   );
 }
 
 interface FrameworkCardProps {
-  item: FrameworkCardItem;
+  item: FrameworkCardData;
   index: number;
   isSelected: boolean;
   onSelect: () => void;
@@ -197,90 +237,47 @@ function FrameworkCard({
   index,
   isSelected,
   onSelect,
-  useTilt = false,
 }: FrameworkCardProps) {
   const [isHovered, setIsHovered] = useState(false);
 
-  const colorStyles: Record<CardColor, { card: string; badge: string }> = {
+  const colorStyles: Record<
+    CardColor,
+    { card: string; badge: string; text: string }
+  > = {
     yellow: {
       card: "bg-[#FFD329] text-[#141A35]",
-      badge: "bg-[#FFFDF5] text-[#141A35]",
+      badge: "bg-[#141A35] text-[#FFD329]",
+      text: "text-[#141A35]",
     },
     blue: {
-      card: "bg-[#2450EA] text-[#FFFDF5]",
+      card: "bg-[#2450EA] text-white",
       badge: "bg-[#FFD329] text-[#141A35]",
+      text: "text-white",
     },
     pink: {
       card: "bg-[#F4779B] text-[#141A35]",
-      badge: "bg-[#FFFDF5] text-[#141A35]",
+      badge: "bg-[#141A35] text-[#F4779B]",
+      text: "text-[#141A35]",
     },
     cream: {
       card: "bg-[#FFFDF5] text-[#141A35]",
-      badge: "bg-[#FFD329] text-[#141A35]",
+      badge: "bg-[#2450EA] text-white",
+      text: "text-[#141A35]",
     },
   };
 
-  const baseRotate = useTilt ? item.rotation : 0;
-  const hoverRotate = useTilt ? item.rotation * 0.35 : 0;
+  const baseRotate = item.rotation;
+  const hoverRotate = baseRotate * 0.4;
 
   return (
-    <div className="relative">
-      {/* Subtle navy accent strokes near selected cards */}
-      {useTilt && item.hasAccentStroke === "top-left" && (
-        <svg
-          width="28"
-          height="28"
-          viewBox="0 0 28 28"
-          className="absolute -top-5 -left-5 pointer-events-none"
-          aria-hidden="true"
-        >
-          <path
-            d="M 6 22 L 16 8 M 14 24 L 24 14"
-            stroke="#141A35"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-          />
-        </svg>
-      )}
-      {useTilt && item.hasAccentStroke === "top-right" && (
-        <svg
-          width="28"
-          height="28"
-          viewBox="0 0 28 28"
-          className="absolute -top-5 -right-5 pointer-events-none"
-          aria-hidden="true"
-        >
-          <path
-            d="M 6 12 L 20 6 M 10 20 L 22 14"
-            stroke="#141A35"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-          />
-        </svg>
-      )}
-      {useTilt && item.hasAccentStroke === "bottom-left" && (
-        <svg
-          width="28"
-          height="28"
-          viewBox="0 0 28 28"
-          className="absolute -bottom-5 -left-5 pointer-events-none"
-          aria-hidden="true"
-        >
-          <path
-            d="M 8 6 L 18 20 M 18 6 L 24 15"
-            stroke="#141A35"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-          />
-        </svg>
-      )}
-
+    <div
+      className="w-full relative"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <motion.button
         type="button"
         onClick={onSelect}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        aria-label={`Stage ${item.id}: ${item.heading}`}
         initial={{
           opacity: 0,
           y: 22,
@@ -366,7 +363,7 @@ function CentralFrameworkCTA({
         scale: 0.99,
         transition: { duration: 0.1 },
       }}
-      className={`group framework-neo-cta px-7 py-4 xl:px-9 xl:py-5 inline-flex items-center justify-center gap-3 font-heading font-extrabold text-[clamp(14px,1.2vw,18px)] uppercase tracking-wider cursor-pointer select-none whitespace-nowrap ${className}`}
+      className={`group framework-neo-cta px-7 py-4 xl:px-9 xl:py-5 inline-flex items-center justify-center gap-3 font-heading font-extrabold text-[clamp(14px,1.2vw,18px)] uppercase tracking-wider cursor-pointer select-none whitespace-nowrap bg-[#FFD329] border-[3px] border-[#141A35] text-[#141A35] rounded-full shadow-[6px_6px_0_#141A35] hover:shadow-[8px_8px_0_#141A35] ${className}`}
     >
       <span>EXPLORE THE FRAMEWORK</span>
       <ArrowRight
@@ -447,29 +444,38 @@ function ConnectingArrowsSVG({
 }
 
 export function FrameworkPage({ onBack }: FrameworkPageProps) {
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [viewMode, setViewMode] = useState<"map" | "agent">(() => {
+    if (typeof window !== "undefined" && (window.location.hash === "#agent" || window.location.search.includes("agent"))) {
+      return "agent";
+    }
+    return "map";
+  });
 
-  const handleCycleFramework = () => {
-    setSelectedIndex((prev) =>
-      prev === null ? 0 : (prev + 1) % frameworkCards.length
-    );
+  const [selectedCardModal, setSelectedCardModal] = useState<FrameworkCardData | null>(null);
+
+  const handleCardClick = (card: FrameworkCardData) => {
+    setSelectedCardModal(card);
+  };
+
+  const handleLaunchAgent = () => {
+    setSelectedCardModal(null);
+    setViewMode("agent");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
     <MotionConfig reducedMotion="never">
       <div className="min-h-screen w-full bg-[#FFFBEF] text-[#141A35] font-body relative overflow-x-hidden flex flex-col">
-        {/* Background Decorations (Behind content, clipped to viewport) */}
+        {/* Background Decorations */}
         <div
           className="absolute inset-0 pointer-events-none overflow-hidden z-0"
           aria-hidden="true"
         >
-          {/* Cropped Blue & Pink Corner Circles with Navy Outlines */}
           <div className="absolute -top-24 -left-24 w-48 h-48 rounded-full bg-[#F4779B] border-[3px] border-[#141A35]" />
           <div className="absolute -bottom-28 -left-20 w-56 h-56 rounded-full bg-[#2450EA] border-[3px] border-[#141A35]" />
           <div className="absolute -top-24 -right-20 w-52 h-52 rounded-full bg-[#2450EA] border-[3px] border-[#141A35]" />
           <div className="absolute -bottom-28 -right-24 w-56 h-56 rounded-full bg-[#FFD329] border-[3px] border-[#141A35]" />
 
-          {/* Small Navy Dot Patterns Near Canvas Edges */}
           <NavyDotGrid
             rows={5}
             cols={5}
@@ -480,15 +486,10 @@ export function FrameworkPage({ onBack }: FrameworkPageProps) {
             cols={5}
             className="hidden md:block absolute right-3 top-[22%]"
           />
-          <NavyDotGrid
-            rows={4}
-            cols={7}
-            className="hidden lg:block absolute left-[45%] bottom-2"
-          />
         </div>
 
-        {/* Compact Top Navigation */}
-        <header className="relative z-30 w-full max-w-[1440px] mx-auto px-4 sm:px-8 h-13 flex items-center justify-between border-b-2 border-[#141A35]/15">
+        {/* Top Navigation */}
+        <header className="relative z-30 w-full max-w-[1440px] mx-auto px-4 sm:px-8 py-3 flex flex-wrap items-center justify-between gap-3 border-b-2 border-[#141A35]/15">
           <motion.button
             type="button"
             onClick={onBack}
@@ -501,123 +502,210 @@ export function FrameworkPage({ onBack }: FrameworkPageProps) {
             <span>PROBLEM FINDER</span>
           </motion.button>
 
-          <span className="font-heading font-extrabold text-[11px] sm:text-xs tracking-[0.16em] uppercase text-[#141A35]">
-            ENTREPRENEURIAL JOURNEY FRAMEWORK
+          {/* Mode Switcher Tabs */}
+          <div className="flex items-center gap-2 bg-[#FFFDF5] p-1 rounded-full border-2 border-[#141A35] shadow-[2px_2px_0_#141A35]">
+            <button
+              type="button"
+              onClick={() => setViewMode("map")}
+              className={`px-3 py-1.5 rounded-full font-heading font-extrabold text-xs uppercase tracking-wider transition-all cursor-pointer inline-flex items-center gap-1.5 ${
+                viewMode === "map"
+                  ? "bg-[#FFD329] text-[#141A35] shadow-[2px_2px_0_#141A35]"
+                  : "text-[#141A35]/70 hover:text-[#141A35]"
+              }`}
+            >
+              <Compass className="w-3.5 h-3.5" />
+              JOURNEY MAP
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setViewMode("agent")}
+              className={`px-3 py-1.5 rounded-full font-heading font-extrabold text-xs uppercase tracking-wider transition-all cursor-pointer inline-flex items-center gap-1.5 ${
+                viewMode === "agent"
+                  ? "bg-[#2450EA] text-white shadow-[2px_2px_0_#141A35]"
+                  : "text-[#141A35]/70 hover:text-[#141A35]"
+              }`}
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              10% RESEARCH AGENT
+            </button>
+          </div>
+
+          <span className="hidden sm:inline font-heading font-extrabold text-[11px] sm:text-xs tracking-[0.16em] uppercase text-[#141A35]">
+            MIT STARTUP FRAMEWORK
           </span>
         </header>
 
-        {/* Main Responsive Framework Canvas */}
-        <main className="relative z-10 flex-1 flex items-center justify-center w-full max-w-[1440px] mx-auto px-4 sm:px-6 xl:px-8 py-3">
-          {/* ============================================================
-              DESKTOP COMPOSITION (lg: 1024px+)
-              Fits comfortably within a 100vh desktop viewport while
-              allowing natural vertical scroll on shorter screens
-          ============================================================ */}
-          <div className="hidden lg:block relative w-full h-[clamp(640px,calc(100vh-76px),840px)] max-w-[1380px] mx-auto">
-            {/* Curved Navy Connector Arrows */}
-            <ConnectingArrowsSVG selectedIndex={selectedIndex} />
+        {/* Content View: Journey Map vs Research Agent */}
+        {viewMode === "agent" ? (
+          <main className="relative z-10 flex-1 w-full">
+            <ResearchAgentWorkspace onBackToMap={() => setViewMode("map")} />
+          </main>
+        ) : (
+          <main className="relative z-10 flex-1 flex items-center justify-center w-full max-w-[1440px] mx-auto px-4 sm:px-6 xl:px-8 py-3">
+            {/* Desktop Composition */}
+            <div className="hidden lg:block relative w-full h-[clamp(640px,calc(100vh-76px),840px)] max-w-[1380px] mx-auto">
+              <ConnectingArrowsSVG selectedIndex={null} />
 
-            {/* Central EXPLORE THE FRAMEWORK -> Button */}
-            <div className="absolute left-1/2 top-[48.5%] -translate-x-1/2 -translate-y-1/2 z-20">
-              <CentralFrameworkCTA onClick={handleCycleFramework} />
+              {/* Central EXPLORE THE FRAMEWORK -> Button */}
+              <div className="absolute left-1/2 top-[48.5%] -translate-x-1/2 -translate-y-1/2 z-20">
+                <CentralFrameworkCTA onClick={handleLaunchAgent} />
+              </div>
+
+              {/* Nine Solid Neo-Brutalist Cards */}
+              {frameworkCards.map((item, idx) => (
+                <div
+                  key={item.id}
+                  className={`absolute z-10 ${item.desktopPos}`}
+                >
+                  <FrameworkCard
+                    item={item}
+                    index={idx}
+                    isSelected={false}
+                    onSelect={() => handleCardClick(item)}
+                    useTilt={true}
+                  />
+                </div>
+              ))}
             </div>
 
-            {/* Nine Solid Neo-Brutalist Cards */}
-            {frameworkCards.map((item, idx) => (
-              <div
-                key={item.id}
-                className={`absolute z-10 ${item.desktopPos}`}
-              >
+            {/* Tablet Composition */}
+            <div className="hidden md:flex lg:hidden flex-col items-center w-full max-w-4xl mx-auto py-4 gap-4 relative">
+              <div className="grid grid-cols-2 gap-4 w-full relative z-10">
+                {[0, 2, 5, 1].map((cardIdx) => (
+                  <FrameworkCard
+                    key={frameworkCards[cardIdx].id}
+                    item={frameworkCards[cardIdx]}
+                    index={cardIdx}
+                    isSelected={false}
+                    onSelect={() => handleCardClick(frameworkCards[cardIdx])}
+                  />
+                ))}
+              </div>
+
+              <div className="my-3 flex justify-center relative z-20">
+                <CentralFrameworkCTA onClick={handleLaunchAgent} />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 w-full relative z-10">
+                {[6, 3, 7, 4].map((cardIdx) => (
+                  <FrameworkCard
+                    key={frameworkCards[cardIdx].id}
+                    item={frameworkCards[cardIdx]}
+                    index={cardIdx}
+                    isSelected={false}
+                    onSelect={() => handleCardClick(frameworkCards[cardIdx])}
+                  />
+                ))}
+              </div>
+
+              <div className="w-full max-w-md relative z-10">
                 <FrameworkCard
-                  item={item}
-                  index={idx}
-                  isSelected={selectedIndex === idx}
-                  onSelect={() => setSelectedIndex(idx)}
-                  useTilt={true}
+                  item={frameworkCards[8]}
+                  index={8}
+                  isSelected={false}
+                  onSelect={() => handleCardClick(frameworkCards[8])}
                 />
               </div>
-            ))}
-          </div>
+            </div>
 
-          {/* ============================================================
-              TABLET COMPOSITION (md to lg: 768px – 1023px)
-          ============================================================ */}
-          <div className="hidden md:flex lg:hidden flex-col items-center w-full max-w-4xl mx-auto py-4 gap-4 relative">
-            <div className="grid grid-cols-2 gap-4 w-full relative z-10">
-              {[0, 2, 5, 1].map((cardIdx) => (
-                <FrameworkCard
-                  key={frameworkCards[cardIdx].id}
-                  item={frameworkCards[cardIdx]}
-                  index={cardIdx}
-                  isSelected={selectedIndex === cardIdx}
-                  onSelect={() => setSelectedIndex(cardIdx)}
+            {/* Mobile Composition */}
+            <div className="flex md:hidden flex-col items-center w-full max-w-md mx-auto py-4 gap-3.5 relative">
+              <div className="w-full flex justify-center mb-1">
+                <CentralFrameworkCTA
+                  onClick={handleLaunchAgent}
+                  className="w-full max-w-xs"
                 />
+              </div>
+
+              {frameworkCards.map((item, idx) => (
+                <div key={item.id} className="w-full">
+                  <FrameworkCard
+                    item={item}
+                    index={idx}
+                    isSelected={false}
+                    onSelect={() => handleCardClick(item)}
+                  />
+                </div>
               ))}
             </div>
+          </main>
+        )}
 
-            <div className="my-3 flex justify-center relative z-20">
-              <CentralFrameworkCTA onClick={handleCycleFramework} />
-            </div>
+        {/* Phase Details Modal */}
+        <AnimatePresence>
+          {selectedCardModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#141A35]/60 backdrop-blur-sm">
+              <motion.div
+                initial={{ scale: 0.94, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.94, opacity: 0 }}
+                className="bg-[#FFFDF5] border-[3.5px] border-[#141A35] rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-[8px_8px_0_#141A35] space-y-5"
+              >
+                <div className="flex items-center justify-between border-b-2 border-[#141A35]/15 pb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-0.5 rounded-full bg-[#FFD329] border-2 border-[#141A35] font-heading font-black text-xs text-[#141A35]">
+                      PHASE {selectedCardModal.id}
+                    </span>
+                    <span className="font-heading font-extrabold text-xs uppercase text-[#2450EA]">
+                      {selectedCardModal.mitConcept}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedCardModal(null)}
+                    className="p-1 rounded-lg border border-[#141A35] bg-white hover:bg-gray-100 cursor-pointer"
+                  >
+                    <X className="w-4 h-4 text-[#141A35]" />
+                  </button>
+                </div>
 
-            <div className="grid grid-cols-2 gap-4 w-full relative z-10">
-              {[6, 3, 7, 4].map((cardIdx) => (
-                <FrameworkCard
-                  key={frameworkCards[cardIdx].id}
-                  item={frameworkCards[cardIdx]}
-                  index={cardIdx}
-                  isSelected={selectedIndex === cardIdx}
-                  onSelect={() => setSelectedIndex(cardIdx)}
-                />
-              ))}
-            </div>
+                <div className="space-y-3">
+                  <h3 className="font-heading font-black text-xl text-[#141A35] leading-tight">
+                    {selectedCardModal.heading}
+                  </h3>
 
-            <div className="w-full max-w-md relative z-10">
-              <FrameworkCard
-                item={frameworkCards[8]}
-                index={8}
-                isSelected={selectedIndex === 8}
-                onSelect={() => setSelectedIndex(8)}
-              />
-            </div>
-          </div>
+                  <div className="p-4 rounded-2xl bg-[#FFFBEF] border-2 border-[#141A35] space-y-2 shadow-[2px_2px_0_#141A35]">
+                    <div className="font-heading font-extrabold text-xs uppercase tracking-wider text-[#141A35]/70">
+                      MIT Framework Core Insight:
+                    </div>
+                    <p className="font-body text-xs sm:text-sm text-[#141A35] leading-relaxed">
+                      {selectedCardModal.mitInsight}
+                    </p>
+                  </div>
 
-          {/* ============================================================
-              MOBILE VERTICAL LAYOUT (< 768px)
-              Clean vertical sequence with accessible Central CTA
-          ============================================================ */}
-          <div className="flex md:hidden flex-col w-full max-w-md mx-auto py-3 gap-3.5 relative z-10">
-            <div className="flex flex-col gap-3.5">
-              {frameworkCards.slice(0, 4).map((item, idx) => (
-                <FrameworkCard
-                  key={item.id}
-                  item={item}
-                  index={idx}
-                  isSelected={selectedIndex === idx}
-                  onSelect={() => setSelectedIndex(idx)}
-                />
-              ))}
-            </div>
+                  <div className="p-4 rounded-2xl bg-[#FFFDF5] border-2 border-[#141A35] space-y-2 shadow-[2px_2px_0_#141A35]">
+                    <div className="font-heading font-extrabold text-xs uppercase tracking-wider text-[#2450EA]">
+                      Suggested Founder Experiment:
+                    </div>
+                    <p className="font-body text-xs sm:text-sm text-[#141A35] font-medium leading-relaxed">
+                      {selectedCardModal.suggestedTest}
+                    </p>
+                  </div>
+                </div>
 
-            <div className="my-2 flex justify-center">
-              <CentralFrameworkCTA
-                onClick={handleCycleFramework}
-                className="w-full max-w-[340px]"
-              />
-            </div>
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedCardModal(null)}
+                    className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-white border-2 border-[#141A35] font-heading font-bold text-xs uppercase text-[#141A35] hover:bg-gray-100 cursor-pointer"
+                  >
+                    Close
+                  </button>
 
-            <div className="flex flex-col gap-3.5">
-              {frameworkCards.slice(4).map((item, idx) => (
-                <FrameworkCard
-                  key={item.id}
-                  item={item}
-                  index={idx + 4}
-                  isSelected={selectedIndex === idx + 4}
-                  onSelect={() => setSelectedIndex(idx + 4)}
-                />
-              ))}
+                  <button
+                    type="button"
+                    onClick={handleLaunchAgent}
+                    className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#FFD329] border-2 border-[#141A35] font-heading font-black text-xs uppercase tracking-wider text-[#141A35] shadow-[3px_3px_0_#141A35] hover:shadow-[5px_5px_0_#141A35] inline-flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <span>TEST IN 10% RESEARCH AGENT</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </motion.div>
             </div>
-          </div>
-        </main>
+          )}
+        </AnimatePresence>
       </div>
     </MotionConfig>
   );

@@ -3,7 +3,11 @@ import { Sticker } from "./Sticker";
 import { Search, Target, Lightbulb, ArrowDown } from "lucide-react";
 import { WaveDivider } from "./WaveDivider";
 
-export function Hero() {
+interface HeroProps {
+  onExploreFramework?: () => void;
+}
+
+export function Hero({ onExploreFramework }: HeroProps) {
   const words = ["Find problems", "worth", "solving."];
 
   const scrollTo = (id: string) => {
@@ -74,6 +78,14 @@ export function Hero() {
             >
               Explore platforms <ArrowDown className="w-5 h-5" />
             </button>
+            {onExploreFramework && (
+              <button 
+                onClick={onExploreFramework}
+                className="bg-[#FFD329] text-[#141A35] border-2 border-[#141A35] px-8 py-4 rounded-xl font-heading font-extrabold text-lg uppercase tracking-wider hard-shadow hard-shadow-hover flex items-center gap-2 cursor-pointer"
+              >
+                Explore Framework →
+              </button>
+            )}
             <button 
               onClick={() => scrollTo('how-it-works')}
               className="bg-background text-foreground px-8 py-4 rounded-xl font-heading font-extrabold text-lg uppercase tracking-wider hard-shadow hard-shadow-hover cursor-pointer"

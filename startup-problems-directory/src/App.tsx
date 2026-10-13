@@ -14,8 +14,11 @@ function isFrameworkLocation(): boolean {
   const hash = window.location.hash;
   return (
     path === "/framework" ||
+    path === "/agent" ||
     hash === "#/framework" ||
-    hash === "#framework"
+    hash === "#framework" ||
+    hash === "#agent" ||
+    hash === "#/agent"
   );
 }
 
@@ -57,7 +60,7 @@ function App() {
           <Ticker />
           <Navbar onExploreFramework={navigateToFramework} />
           <main className="flex-1">
-            <Hero />
+            <Hero onExploreFramework={navigateToFramework} />
             <PlatformsSection />
             <HowItWorks />
             <CTA />
