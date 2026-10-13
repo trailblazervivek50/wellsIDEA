@@ -8,25 +8,39 @@ import { HowItWorks } from "./components/HowItWorks";
 import { CTA } from "./components/CTA";
 import { Footer } from "./components/Footer";
 import { FrameworkPage } from "./components/FrameworkPage";
+import { StartupEvaluationPage } from "./components/StartupEvaluationPage";
 
-function isFrameworkLocation(): boolean {
+type PageMode = "home" | "framework" | "evaluation";
+
+function getInitialPage(): PageMode {
   const path = window.location.pathname.replace(/\/+$/, "");
   const hash = window.location.hash;
-  return (
+
+  if (
+    path === "/evaluation" ||
+    hash === "#/evaluation" ||
+    hash === "#evaluation"
+  ) {
+    return "evaluation";
+  }
+
+  if (
     path === "/framework" ||
     hash === "#/framework" ||
     hash === "#framework"
-  );
+  ) {
+    return "framework";
+  }
+
+  return "home";
 }
 
 function App() {
-  const [showFramework, setShowFramework] = useState<boolean>(() =>
-    isFrameworkLocation()
-  );
+  const [currentPage, setCurrentPage] = useState<PageMode>(() => getInitialPage());
 
   useEffect(() => {
     const handlePopState = () => {
-      setShowFramework(isFrameworkLocation());
+      setCurrentPage(getInitialPage());
     };
     window.addEventListener("popstate", handlePopState);
     window.addEventListener("hashchange", handlePopState);
@@ -36,28 +50,39 @@ function App() {
     };
   }, []);
 
-  const navigateToFramework = () => {
-    window.history.pushState({ page: "framework" }, "", "/framework");
-    setShowFramework(true);
+  const navigateToHome = () => {
+    window.history.pushState({ page: "home" }, "", "/");
+    setCurrentPage("home");
     window.scrollTo({ top: 0, behavior: "instant" });
   };
 
-  const navigateToHome = () => {
-    window.history.pushState({ page: "home" }, "", "/");
-    setShowFramework(false);
+  const navigateToFramework = () => {
+    window.history.pushState({ page: "framework" }, "", "/framework");
+    setCurrentPage("framework");
+    window.scrollTo({ top: 0, behavior: "instant" });
+  };
+
+  const navigateToEvaluation = () => {
+    window.history.pushState({ page: "evaluation" }, "", "/evaluation");
+    setCurrentPage("evaluation");
     window.scrollTo({ top: 0, behavior: "instant" });
   };
 
   return (
     <MotionConfig reducedMotion="never">
-      {showFramework ? (
-        <FrameworkPage onBack={navigateToHome} />
+      {currentPage === "evaluation" ? (
+        <StartupEvaluationPage onBack={navigateToHome} />
+      ) : currentPage === "framework" ? (
+        <FrameworkPage
+          onBack={navigateToHome}
+          onExploreFramework={navigateToEvaluation}
+        />
       ) : (
         <div className="min-h-screen flex flex-col">
           <Ticker />
-          <Navbar onExploreFramework={navigateToFramework} />
+          <Navbar onExploreFramework={navigateToEvaluation} />
           <main className="flex-1">
-            <Hero />
+            <Hero onExploreFramework={navigateToEvaluation} />
             <PlatformsSection />
             <HowItWorks />
             <CTA />

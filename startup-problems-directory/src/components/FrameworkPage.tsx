@@ -4,6 +4,7 @@ import { useState } from "react";
 
 interface FrameworkPageProps {
   onBack: () => void;
+  onExploreFramework?: () => void;
 }
 
 type CardColor = "yellow" | "blue" | "pink" | "cream";
@@ -446,10 +447,14 @@ function ConnectingArrowsSVG({
   );
 }
 
-export function FrameworkPage({ onBack }: FrameworkPageProps) {
+export function FrameworkPage({ onBack, onExploreFramework }: FrameworkPageProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const handleCycleFramework = () => {
+    if (onExploreFramework) {
+      onExploreFramework();
+      return;
+    }
     setSelectedIndex((prev) =>
       prev === null ? 0 : (prev + 1) % frameworkCards.length
     );
@@ -501,9 +506,21 @@ export function FrameworkPage({ onBack }: FrameworkPageProps) {
             <span>PROBLEM FINDER</span>
           </motion.button>
 
-          <span className="font-heading font-extrabold text-[11px] sm:text-xs tracking-[0.16em] uppercase text-[#141A35]">
-            ENTREPRENEURIAL JOURNEY FRAMEWORK
-          </span>
+          <div className="flex items-center gap-3">
+            <span className="hidden sm:inline font-heading font-extrabold text-[11px] sm:text-xs tracking-[0.16em] uppercase text-[#141A35]">
+              ENTREPRENEURIAL JOURNEY FRAMEWORK
+            </span>
+            {onExploreFramework && (
+              <button
+                type="button"
+                onClick={onExploreFramework}
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFD329] border-2 border-[#141A35] font-heading font-extrabold text-[11px] uppercase tracking-wider text-[#141A35] shadow-[2px_2px_0_#141A35] hover:bg-[#2450EA] hover:text-white transition-colors cursor-pointer"
+              >
+                <span>10% EVALUATION</span>
+                <ArrowRight className="w-3 h-3" />
+              </button>
+            )}
+          </div>
         </header>
 
         {/* Main Responsive Framework Canvas */}
